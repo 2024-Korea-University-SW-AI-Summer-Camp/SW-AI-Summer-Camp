@@ -82,7 +82,7 @@ def get_interpretation_heungbu(card_descriptions, query, client):
                      "카드의 의미를 다 합쳐서 최종적으로 정리해주는 것도 #총정리 로 해줘."
                      
     response = client.chat.completions.create(
-        model="gpt-4o-mini",
+        model="gpt-4o",
         messages=[
             {"role": "user", "content": query},
             {"role": "system", "content": system_message}
@@ -95,7 +95,7 @@ st.header("흥부 놀부 타로 챗봇에 오신걸 환영합니다.")
 st.write("타로 카드 3개를 골라주세요.")
 
 # OpenAI API Key
-openai_api_key = st.text_input("Enter OpenAI API Key", type="password")
+openai_api_key = st.text_input("OpenAI key를 입력해주세요!", type="password")
 if not openai_api_key:
     st.info("Please add your OpenAI API key to continue.", icon="🔑")
 else:
@@ -111,17 +111,17 @@ else:
             tarot_df, vectorizer, index = create_faiss_index(tarot_descriptions)
 
             # User selects 3 tarot cards
-            selected_cards = st.multiselect("Select 3 tarot cards", list(tarot_df['label']))
+            selected_cards = st.multiselect("타로카드 3개를 골라주세요!", list(tarot_df['label']))
 
             if len(selected_cards) == 3:
                 card_descriptions = [retrieve_card_descriptions(card, tarot_df) for card in selected_cards]
 
                 # 질문 유형 선택
-                question_type = st.selectbox("질문 유형을 선택하세요:", ["운명", "사랑", "재물", "건강", "기타"])
+                question_type = st.selectbox("질문 유형을 선택하세요!:", ["운명", "사랑", "재물", "건강", "기타"])
 
                 # "기타"를 선택한 경우 서술형 질문 입력
                 if question_type == "기타":
-                    query = st.text_input("질문을 입력하세요:")
+                    query = st.text_input("질문을 입력하세요!:")
                 else:
                     query = question_type
 
