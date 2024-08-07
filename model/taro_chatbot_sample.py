@@ -116,8 +116,14 @@ else:
             if len(selected_cards) == 3:
                 card_descriptions = [retrieve_card_descriptions(card, tarot_df) for card in selected_cards]
 
-                # User inputs their query
-                query = st.text_input("Ask your question related to the tarot reading")
+                # 질문 유형 선택
+                question_type = st.selectbox("질문 유형을 선택하세요:", ["운명", "사랑", "재물", "건강", "기타"])
+
+                # "기타"를 선택한 경우 서술형 질문 입력
+                if question_type == "기타":
+                    query = st.text_input("질문을 입력하세요:")
+                else:
+                    query = question_type
 
                 if query:
                     character = st.selectbox("흥부와 놀부 중 누구한테 타로점을 보시겠습니까?", ["흥부", "놀부"])
