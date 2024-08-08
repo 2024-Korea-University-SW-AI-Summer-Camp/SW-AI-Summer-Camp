@@ -1,0 +1,39 @@
+from fastapi import FastAPI, APIRouter
+from chat_sample2 import *
+from starlette.middleware.cors import CORSMiddleware
+
+router = APIRouter(
+    prefix="/api/tarot",
+)
+
+@router.get("input")
+def tarot_input():
+    card = extract_tarot_descriptions_from_txt(txt_path)
+    query = st.text_input("Ask your question related to the tarot reading")
+    character = st.selectbox("흥부와 놀부 중 누구한테 타로점을 보시겠습니까?", ["흥부", "놀부"])
+    return card, query, character
+
+@router.get("tarot_out")
+def get_tarot():
+    card, query, character = tarot_input()
+    if query:
+        if character == "흥부":
+            interpretation = get_interpretation_heungbu(card_descriptions, query, client)
+        else:
+            interpretation = get_interpretation_nolbu(card_descriptions, query, client)
+    return interpretation
+
+app = FastAPI()
+
+origins = [] # 프론트 페이지 
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+app.include_router(router)
