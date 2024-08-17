@@ -1,12 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 
 const CategorySelection = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const selectedCharacter = location.state?.character;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleCategorySelect = (category) => {
     setSelectedCategory(category);
@@ -57,46 +68,50 @@ const CategorySelection = () => {
                 </div>
               </div>
               <div className="self-stretch flex flex-col items-start justify-start p-[1rem] box-border gap-[0.75rem] max-w-full">
-                {categories.map((category) => (
-                  <div 
-                    key={category.id}
-                    className={`self-stretch rounded-xl border-dimgray border-[1px] border-solid box-border flex flex-row flex-wrap items-center justify-start py-[0.875rem] px-[0.937rem] gap-[1rem] max-w-full cursor-pointer ${
-                      selectedCategory === category.id ? "bg-blueviolet" : ""
-                    }`}
-                    onClick={() => handleCategorySelect(category.id)}
-                  >
-                    <div className="flex-1 flex flex-col items-start justify-start min-w-[34.938rem] max-w-full mq700:min-w-full">
-                      <div className="self-stretch flex flex-col items-start justify-start">
-                        <div className="self-stretch relative text-[0.875rem] leading-[1.313rem] font-medium font-noto-serif text-white text-left">
-                          {category.name}
-                        </div>
-                      </div>
-                    </div>
-                    {selectedCategory === category.id && (
-                      <img
-                        className="h-[1.25rem] w-[1.25rem] relative rounded-3xs overflow-hidden shrink-0"
-                        loading="lazy"
-                        alt=""
-                        src="/depth-6-frame-1.svg"
-                      />
-                    )}
-                  </div>
-                ))}
+              {categories.map((category) => (
+  <div 
+    key={category.id}
+    className={`self-stretch rounded-xl border-dimgray border-[1px] border-solid box-border flex flex-row items-center justify-between py-[0.875rem] px-[0.937rem] gap-[1rem] max-w-full cursor-pointer ${
+      selectedCategory === category.id ? "bg-blueviolet" : ""
+    }`}
+    onClick={() => handleCategorySelect(category.id)}
+  >
+    <div className="flex-1 flex flex-col items-start justify-start">
+      <div className="self-stretch flex flex-col items-start justify-start">
+        <div className="self-stretch relative text-[0.875rem] leading-[1.313rem] font-medium font-noto-serif text-white text-left">
+          {category.name}
+        </div>
+      </div>
+    </div>
+    {selectedCategory === category.id && (
+      <img
+        className="h-[1.25rem] w-[1.25rem] relative rounded-3xs overflow-hidden shrink-0"
+        loading="lazy"
+        alt=""
+        src="/depth-6-frame-1.svg"
+      />
+    )}
+  </div>
+))}
               </div>
             </div>
           </div>
           <div className="self-stretch flex flex-row items-start justify-center py-[0rem] px-[1.25rem] box-border max-w-full mb-[20rem]">
-            <button 
-              className="cursor-pointer [border:none] py-[0.75rem] px-[1.25rem] bg-blueviolet w-[30rem] rounded-3xl overflow-hidden flex flex-row items-center justify-center box-border max-w-full"
-              onClick={handleNext}
-            >
-              <div className="overflow-hidden flex flex-col items-center justify-start py-[0rem] px-[0.063rem]">
-                <b className="relative text-[1rem] leading-[1.5rem] font-noto-serif text-white text-center">
-                  다음
-                </b>
-              </div>
-            </button>
-          </div>
+      <button 
+        className={`cursor-pointer [border:none] py-[0.75rem] px-[1.25rem] bg-blueviolet rounded-3xl overflow-hidden flex flex-row items-center justify-center box-border ${
+          isMobile 
+            ? "min-w-[5.25rem] max-w-[30rem] w-[15rem]" 
+            : "w-[30rem] max-w-full"
+        }`}
+        onClick={handleNext}
+      >
+        <div className={`${isMobile ? "w-[15rem]" : "w-full"} overflow-hidden shrink-0 flex flex-col items-center justify-start`}>
+          <b className={`relative ${isMobile ? "text-[1rem]" : "text-[1.2rem]"} leading-[1.5rem] font-noto-serif text-white text-center`}>
+            다음
+          </b>
+        </div>
+      </button>
+    </div>
         </form>
       </main>
     </div>

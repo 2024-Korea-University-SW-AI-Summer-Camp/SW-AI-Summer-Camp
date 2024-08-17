@@ -1,10 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 
 const CharacterSelection = () => {
   const [selectedCharacter, setSelectedCharacter] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleCharacterSelect = (character) => {
     setSelectedCharacter(character);
@@ -37,10 +48,10 @@ const CharacterSelection = () => {
                 </b>
               </div>
               <div className="self-stretch flex flex-col items-center justify-start p-[1rem]">
-                <div className="self-stretch flex flex-wrap justify-center gap-8">
+                <div className={`self-stretch flex ${isMobile ? 'flex-row' : 'flex-wrap'} justify-center gap-8`}>
                   <div className="flex flex-col items-center justify-start">
                     <div 
-                      className={`h-[40rem] w-[20rem] relative cursor-pointer ${
+                      className={`${isMobile ? 'h-[20rem] w-[10rem]' : 'h-[40rem] w-[20rem]'} relative cursor-pointer ${
                         selectedCharacter === "흥부" ? "ring-4 ring-purple-500 rounded-xl" : ""
                       }`}
                       onClick={() => handleCharacterSelect("흥부")}
@@ -55,39 +66,47 @@ const CharacterSelection = () => {
                   </div>
                   <div className="flex flex-col items-center justify-start">
                     <div 
-                      className={`h-[40rem] w-[20rem] relative cursor-pointer ${
+                      className={`${isMobile ? 'h-[20rem] w-[10rem]' : 'h-[40rem] w-[20rem]'} relative cursor-pointer ${
                         selectedCharacter === "놀부" ? "ring-4 ring-purple-500 rounded-xl" : ""
                       }`}
                       onClick={() => handleCharacterSelect("놀부")}
                     >
                       <img
-                                              className="rounded-xl w-full h-full object-cover"
-                                              loading="lazy"
-                                              alt="놀부"
-                                              src="/nolbu.png"
-                                            />
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div className="self-stretch flex flex-col items-center justify-center w-full mt-[3rem]">
-                                      <button 
-                                        className="cursor-pointer [border:none] py-[0.75rem] px-[1.25rem] bg-blueviolet w-full max-w-md rounded-3xl overflow-hidden flex flex-row items-center justify-center box-border"
-                                        onClick={handleNext}
-                                      >
-                                        <div className="w-full overflow-hidden shrink-0 flex flex-col items-center justify-start">
-                                          <b className="self-stretch relative text-base md:text-sm leading-[1.5rem] font-noto-serif text-white text-center overflow-hidden text-ellipsis whitespace-nowrap">
-                                            다음
-                                          </b>
-                                        </div>
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </section>
-                            </main>
-                          </div>
-                        );
+                        className="rounded-xl w-full h-full object-cover"
+                        loading="lazy"
+                        alt="놀부"
+                        src="/nolbu.png"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="self-stretch flex flex-col items-center justify-center w-full mt-[3rem]">
+  <button 
+    className={`cursor-pointer [border:none] py-[0.75rem] px-[1.25rem] bg-blueviolet rounded-3xl overflow-hidden flex flex-row items-center justify-center box-border ${
+      isMobile 
+        ? "min-w-[5.25rem] max-w-[30rem] w-[15rem]" 
+        : "w-full max-w-md"
+    }`}
+    onClick={handleNext}
+  >
+    <div className={`${isMobile ? "w-[15rem]" : "w-full"} overflow-hidden shrink-0 flex flex-col items-center justify-start`}>
+      <b className={`self-stretch relative ${
+        isMobile 
+          ? "text-[1rem]" 
+          : "text-[1.2rem] md:text-lg"
+      } leading-[1.5rem] font-noto-serif text-white text-center overflow-hidden text-ellipsis whitespace-nowrap`}>
+        다음
+      </b>
+    </div>
+  </button>
+</div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
 };
 
 export default CharacterSelection;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Header from "../components/Header";
 import axios from 'axios';
+import './CardSelection.css';
 
 const CardSelection = () => {
   const cardNames = [
@@ -13,6 +14,7 @@ const CardSelection = () => {
   const [selectedCards, setSelectedCards] = useState([]);
   const [shuffledCards, setShuffledCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showSparkle, setShowSparkle] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { character, category } = location.state || {};
@@ -42,19 +44,22 @@ const CardSelection = () => {
             'Content-Type': 'application/json'
           }
         });
-        navigate("/result", { 
-          state: { 
-            character,
-            category,
-            selectedCards,
-            interpretation: response.data.interpretation
-          } 
-        });
+        setShowSparkle(true);  // 애니메이션 시작
+        setTimeout(() => {
+          navigate("/result", { 
+            state: { 
+              character,
+              category,
+              selectedCards,
+              interpretation: response.data.interpretation
+            } 
+          });
+        }, 2000);  // 2초 후 페이지 이동
       } catch (error) {
         console.error("Error fetching interpretation:", error);
         alert("타로 해석을 가져오는 데 문제가 발생했습니다.");
-      } finally {
         setIsLoading(false);
+        setShowSparkle(false);
       }
     } else {
       alert("카드를 3장 선택해주세요.");
@@ -118,15 +123,18 @@ const CardSelection = () => {
           </div>
         </section>
       </main>
-      {isLoading && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
+      {(isLoading || showSparkle) && (
+        <div className="sparkle-background">
+          <div className="sparkle"></div>
+          {isLoading && (
+            <div className="absolute">
+              <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-white"></div>
+            </div>
+          )}
         </div>
       )}
     </div>
   );
-  
-  
 };
 
 export default CardSelection;

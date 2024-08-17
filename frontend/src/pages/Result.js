@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import { Swiper, SwiperSlide } from "swiper/react";
 import 'swiper/swiper-bundle.css';
 import { Navigation, Pagination } from 'swiper/modules';
-import './Result.css'; // 위에서 작성한 CSS 파일
+import './Result.css';
 
 const Result = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { character, category, selectedCards, interpretation } = location.state || {};
   const [isMobile, setIsMobile] = useState(false);
-  const [isCopied, setIsCopied] = useState(false); // isCopied 상태 변수 추가
+  const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -31,10 +32,14 @@ const Result = () => {
         <img
           src={`/${card}.png`}
           alt={card}
-          className="w-48 h-auto object-cover rounded-lg shadow-lg"
+          className="w-48 h-72 object-cover rounded-lg shadow-lg"
         />
       </div>
     ));
+  };
+
+  const handleNewReading = () => {
+    navigate('/');  // 새로운 타로 읽기를 위해 홈페이지로 이동
   };
 
   const handleInstagramShare = () => {
@@ -50,7 +55,7 @@ const Result = () => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-gray-500 flex flex-col items-center">
+    <div className="w-full min-h-screen bg-gray-500 flex flex-col items-center overflow-x-hidden">
       <Header
         vector0="pending_22:233"
         vector1="pending_22:234"
@@ -77,15 +82,16 @@ const Result = () => {
                     slidesPerView: 3,
                   },
                 }}
-                className="mb-8"
+                className="mb-8 w-full"
+                style={{ overflow: 'hidden' }}
               >
                 {selectedCards.map((card, index) => (
-                  <SwiperSlide key={index}>
+                  <SwiperSlide key={index} className="flex justify-center">
                     <div className="flex flex-col items-center">
                       <img
                         src={`/${card}.png`}
                         alt={card}
-                        className="w-48 h-auto object-cover rounded-lg shadow-lg"
+                        className="w-48 h-72 object-cover rounded-lg shadow-lg"
                       />
                     </div>
                   </SwiperSlide>
@@ -96,40 +102,22 @@ const Result = () => {
                 {renderCards()}
               </div>
             )}
-            <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
+            <div className="bg-gray-700 p-6 rounded-lg shadow-lg mx-4 sm:mx-4">
               <p className="text-lg whitespace-pre-wrap">{interpretation}</p>
             </div>
           </div>
           <div className="w-full max-w-sm flex flex-col items-center gap-4">
-            <div className="text-xl font-semibold">
-              이 해석 공유하기
-            </div>
-            <div className="flex justify-center space-x-6">
-              <button 
-                className="bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition-colors"
-                onClick={handleInstagramShare}
-              >
-                <img
-                  className="w-6 h-6"
-                  alt="Instagram"
-                  src="/image-5@2x.png"
-                />
-              </button>
-              <button 
-                className="bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition-colors relative"
-                onClick={handleURLShare}
-              >
-                <svg className="w-6 h-6" fill="none" stroke="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
-                </svg>
-                {isCopied && (
-                  <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-black text-white px-4 py-1 rounded text-sm whitespace-nowrap">
-                    URL이 복사되었습니다!
-                  </span>
-                )}
-              </button>
-            </div>
-          </div>
+  <button 
+    className="cursor-pointer [border:none] py-[0.75rem] px-[1.25rem] bg-blueviolet rounded-3xl overflow-hidden flex flex-row items-center justify-center box-border min-w-[5.25rem] max-w-[30rem] mq700:max-w-full"
+    onClick={handleNewReading}
+  >
+    <div className="w-[15rem] overflow-hidden shrink-0 flex flex-col items-center justify-start">
+      <b className="self-stretch relative text-[1rem] leading-[1.5rem] font-noto-serif text-white text-center overflow-hidden text-ellipsis whitespace-nowrap">
+         다른 운명 선택하기
+      </b>
+    </div>
+  </button>
+       </div>
         </section>
       </main>
     </div>

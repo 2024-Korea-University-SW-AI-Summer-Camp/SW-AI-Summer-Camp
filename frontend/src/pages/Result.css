@@ -21,3 +21,7 @@
 .swiper-button-next {
   right: 10px; /* 오른쪽 화살표 위치 */
 }
+
+body, html {
+  overflow-x: hidden;
+}
