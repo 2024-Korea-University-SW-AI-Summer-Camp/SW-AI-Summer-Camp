@@ -23,7 +23,8 @@ const Home = () => {
             </div>
             <div className="w-[60rem] flex flex-col items-center justify-start pt-[0rem] px-[0rem] pb-[3.375rem] box-border gap-[0.5rem] max-w-full shrink-0 text-[2.7rem] text-white">
               <div className="self-stretch flex flex-col items-center justify-start">
-                <h1 className="m-0 self-stretch relative text-inherit tracking-[-2px] leading-[3.75rem] font-black font-[inherit] mq450:text-[1.813rem] mq450:leading-[2.25rem] mq950:text-[2.375rem] mq950:leading-[3rem] text-center mt-[1rem] mb-[2rem]">
+                <h1 className="m-0 self-stretch relative text-inherit tracking-[-2px] leading-[3.75rem] font-black font-[inherit] text-center mt-[1rem] mb-[2rem]
+                 text-[2.375rem] leading-[3rem] sm:text-[2rem] sm:leading-[2.5rem] mq450:text-[1.7rem] mq450:leading-[2.25rem] mq950:text-[2.375rem] mq950:leading-[3rem]">
                    신비로운 한국형 타로, 토란🔮
                 </h1>
               </div>

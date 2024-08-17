@@ -42,7 +42,6 @@ const CardSelection = () => {
             'Content-Type': 'application/json'
           }
         });
-        
         navigate("/result", { 
           state: { 
             character,
@@ -66,13 +65,13 @@ const CardSelection = () => {
     return shuffledCards.map((cardName, index) => (
       <div 
         key={index}
-        className={`flex-1 flex flex-col items-start justify-start min-w-[10.75rem] max-w-[11rem] cursor-pointer ${
-          selectedCards.includes(cardName) ? "ring-4 ring-purple-500 rounded-xl" : ""
+        className={`flex flex-col items-center justify-center cursor-pointer ${
+          selectedCards.includes(cardName) ? "ring-4 ring-purple-500 rounded-lg" : "rounded-lg"
         }`}
         onClick={() => handleCardSelect(cardName)}
       >
         <img
-          className="w-[11rem] h-[11rem] relative rounded-xl overflow-hidden shrink-0 object-cover"
+          className="w-full h-auto aspect-[2/3] rounded-lg object-cover"
           loading="lazy"
           alt={cardName}
           src="/card_back.png"
@@ -80,36 +79,36 @@ const CardSelection = () => {
       </div>
     ));
   };
-
+  
   return (
     <div className="w-full relative bg-white flex flex-col items-start justify-start leading-[normal] tracking-[normal]">
-      <main className="self-stretch bg-gray-300 flex flex-col items-start justify-start min-h-[50rem] max-w-full">
+      <main className="self-stretch bg-gray-300 flex flex-col items-start justify-start min-h-screen max-w-full">
         <section className="self-stretch flex flex-col items-start justify-start max-w-full text-center text-[1.375rem] text-white font-noto-serif">
           <Header vector0="pending_1:9" vector1="pending_1:10" />
-          <div className="self-stretch flex flex-row items-start justify-center p-[1.25rem] box-border min-h-[74.188rem] max-w-full">
-            <div className="w-[60rem] overflow-hidden shrink-0 flex flex-col items-start justify-start pt-[0rem] px-[0rem] pb-[0.562rem] box-border max-w-[60rem] mq975:max-w-full">
+          <div className="self-stretch flex flex-row items-start justify-center p-[1.25rem] box-border max-w-full">
+            <div className="w-full max-w-4xl overflow-hidden shrink-0 flex flex-col items-start justify-start pt-[0rem] px-[0rem] pb-[0.562rem] box-border">
               <div className="self-stretch flex flex-col items-center justify-start pt-[1.25rem] px-[1rem] pb-[0.75rem]">
-                <h3 className="m-0 self-stretch relative text-inherit leading-[1.75rem] font-bold font-[inherit] mq450:text-[1.125rem] mq450:leading-[1.375rem]">
+                <h3 className="m-0 self-stretch relative text-inherit leading-[1.75rem] font-bold font-[inherit] text-2xl md:text-xl sm:text-lg">
                   타로 카드 3장을 선택하세요
                 </h3>
-                <p className="mt-4 text-[1rem] leading-[1.5rem]">
-                  마음을 가라앉히고, 당신의 직감을 따라 카드를 선택하세요. <br/>
+                <p className="mt-4 text-base md:text-sm leading-[1.5rem]">
+                  마음을 가라앉히고, 당신의 직감을 따라 카드를 선택하세요. <br className="hidden sm:inline"/>
                   각 카드는 당신의 과거, 현재, 미래를 나타냅니다.
                 </p>
               </div>
-              <div className="self-stretch flex flex-col items-start justify-start p-[1rem] gap-[0.75rem]">
-                <div className="self-stretch flex flex-row flex-wrap items-start justify-center gap-[0.75rem]">
+              <div className="self-stretch p-[1rem]">
+                <div className="grid grid-cols-5 gap-4">
                   {renderCards()}
                 </div>
               </div>
               <div className="self-stretch flex flex-col items-center justify-center py-[0.75rem] px-[1rem] box-border max-w-full">
                 <button 
-                  className="cursor-pointer [border:none] py-[0.75rem] px-[1.25rem] bg-blueviolet w-[30rem] rounded-3xl overflow-hidden flex flex-row items-center justify-center box-border min-w-[5.25rem] max-w-[30rem] mq700:max-w-full"
+                  className="cursor-pointer [border:none] py-[0.75rem] px-[1.25rem] bg-blueviolet w-full max-w-md rounded-3xl overflow-hidden flex flex-row items-center justify-center box-border"
                   onClick={handleNext}
                   disabled={isLoading}
                 >
-                  <div className="w-[20rem] overflow-hidden shrink-0 flex flex-col items-center justify-start">
-                    <b className="self-stretch relative text-[1rem] leading-[1.5rem] font-noto-serif text-white text-center overflow-hidden text-ellipsis whitespace-nowrap">
+                  <div className="w-full overflow-hidden shrink-0 flex flex-col items-center justify-start">
+                    <b className="self-stretch relative text-base md:text-sm leading-[1.5rem] font-noto-serif text-white text-center overflow-hidden text-ellipsis whitespace-nowrap">
                       {isLoading ? "운명의 길을 열고 있습니다..." : "운명을 읽어보세요"}
                     </b>
                   </div>
@@ -126,6 +125,8 @@ const CardSelection = () => {
       )}
     </div>
   );
+  
+  
 };
 
 export default CardSelection;

@@ -1,11 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Header from "../components/Header";
+import { Swiper, SwiperSlide } from "swiper/react";
+import 'swiper/swiper-bundle.css';
+import { Navigation, Pagination } from 'swiper/modules';
+import './Result.css'; // 위에서 작성한 CSS 파일
 
 const Result = () => {
   const location = useLocation();
   const { character, category, selectedCards, interpretation } = location.state || {};
-  const [isCopied, setIsCopied] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isCopied, setIsCopied] = useState(false); // isCopied 상태 변수 추가
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const renderCards = () => {
     return selectedCards.map((card, index) => (
@@ -13,7 +31,7 @@ const Result = () => {
         <img
           src={`/${card}.png`}
           alt={card}
-          className="w-64 h-96 object-cover rounded-lg shadow-lg"
+          className="w-48 h-auto object-cover rounded-lg shadow-lg"
         />
       </div>
     ));
@@ -44,9 +62,40 @@ const Result = () => {
         <section className="w-full flex flex-col items-center gap-10 text-white">
           <div className="w-full">
             <h2 className="text-3xl font-bold mb-6 text-center">타로 해석 결과</h2>
-            <div className="flex justify-center space-x-4 mb-8">
-              {renderCards()}
-            </div>
+            {isMobile ? (
+              <Swiper
+                spaceBetween={20}
+                slidesPerView={1}
+                navigation
+                pagination={{ clickable: true }}
+                modules={[Navigation, Pagination]}
+                breakpoints={{
+                  640: {
+                    slidesPerView: 2,
+                  },
+                  768: {
+                    slidesPerView: 3,
+                  },
+                }}
+                className="mb-8"
+              >
+                {selectedCards.map((card, index) => (
+                  <SwiperSlide key={index}>
+                    <div className="flex flex-col items-center">
+                      <img
+                        src={`/${card}.png`}
+                        alt={card}
+                        className="w-48 h-auto object-cover rounded-lg shadow-lg"
+                      />
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            ) : (
+              <div className="flex justify-center space-x-4 mb-8">
+                {renderCards()}
+              </div>
+            )}
             <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
               <p className="text-lg whitespace-pre-wrap">{interpretation}</p>
             </div>

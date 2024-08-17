@@ -1,0 +1,23 @@
+/* Custom styles for Swiper navigation arrows */
+.swiper-button-prev,
+.swiper-button-next {
+  color: white; /* 화살표 색상 */
+  background-color: rgba(0, 0, 0, 0.5); /* 배경 색상 */
+  border-radius: 50%; /* 둥근 모양 */
+  width: 40px;
+  height: 40px;
+}
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: 16px; /* 화살표 크기 */
+  font-weight: bold;
+}
+
+.swiper-button-prev {
+  left: 10px; /* 왼쪽 화살표 위치 */
+}
+
+.swiper-button-next {
+  right: 10px; /* 오른쪽 화살표 위치 */
+}
